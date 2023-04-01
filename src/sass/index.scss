@@ -1,2 +1,35 @@
-@import './common';
-@import './example';
+@import './gallery';
+@import '~node_modules/modern-normalize/modern-normalize.css';
+
+.wrap{
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 50px;
+    background-color: blueviolet;
+}
+.search-form{
+    padding-top: 10px;
+    text-align: center;
+}
+input{
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid blueviolet;
+    background: #F6F6f6;
+    outline: none;
+}
+button{
+    display: inline-block;
+    border-radius: 8px;
+    height: 25px;
+    background: #F6F6f6;
+    color: blueviolet;
+    border: 1px solid darkgray;
+}
+.load-more{
+    display: none;
+    background-color: blueviolet;
+    color: white;
+    margin: 10px auto;
+}
