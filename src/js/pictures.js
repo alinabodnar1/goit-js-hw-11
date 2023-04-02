@@ -1,9 +1,13 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import SimpleLightbox from "simplelightbox";
+
 import { btnLoadMore } from './index';
-const picturesContainer = document.querySelector('.gallery');
+const gallery = document.querySelector('.gallery');
 
 class Pictures {
-    constructor(webformatURL, tags, likes, views, comments, downloads) {
+    constructor(webformatURL, largeImageURL, tags, likes, views, comments, downloads) {
         this.webformatURL = webformatURL;
+        this.largeImageURL = largeImageURL;
         this.tags = tags;
         this.likes = likes;
         this.views = views;
@@ -14,14 +18,15 @@ class Pictures {
 
 const createCollection = (data, count) => {
     const collection = data.slice(0, count);
-    return data.map(({ webformatURL, tags, likes, views, comments, downloads }) =>
-        (new Pictures(webformatURL, tags, likes, views, comments, downloads)));
+    return collection.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) =>
+        (new Pictures(webformatURL,largeImageURL, tags, likes, views, comments, downloads)));
 };
 
 const renderPictures = (collection) => {
-    const pictures = collection.map(({ webformatURL, tags, likes, views, comments, downloads }) => {
+    const pictures = collection.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         return `<div class="photo-card">
-                    <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+                <a class="gallery__item" href="${webformatURL}">
+                    <img class="gallery__image" src="${largeImageURL}" alt="${tags}" loading="lazy" />
                     <div class="info">
                         <p class="info-item">
                             <b>Likes</b>${likes}</p>
@@ -32,24 +37,38 @@ const renderPictures = (collection) => {
                         <p class="info-item">
                             <b>Downloads</b>${downloads}</p>
                     </div>
-                </div>`;
+                    </a>
+                </div>
+                `;
     }).join("");
-    picturesContainer.insertAdjacentHTML('beforeend', pictures);
-    return;
+
+    gallery.insertAdjacentHTML('beforeend', pictures);
+
+    const lightbox = new SimpleLightbox('.gallery a');
 }
 
 const updateLoadButton = (currentPage) => {
     btnLoadMore.style.display = 'block';
-    btnLoadMore.dataset.page = Number(currentPage) + 1;
+    btnLoadMore.dataset.page = Number(currentPage) + 1;    
 }; 
 
 const clearPictures = () => {
-    picturesContainer.innerHTML = '';
+    gallery.innerHTML = '';
 };
+
+const showNumberOfPictures = (page, totalHits) => {
+    let total = page * 40;
+    if (total >= totalHits) {
+        return;
+    }
+        Notify.success(`Hooray! We found ${total} images.`);
+};
+
 
 export {
     renderPictures,
     createCollection,
     updateLoadButton,
-    clearPictures
+    clearPictures,
+    showNumberOfPictures,
 };

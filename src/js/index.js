@@ -5,7 +5,9 @@ import {
     clearPictures,
     renderPictures,
     createCollection,
-    updateLoadButton
+    updateLoadButton,
+    showNumberOfPictures,
+    gallerySimplelightbox
     } from './pictures';
 
 export const btnLoadMore = document.querySelector('.load-more');
@@ -46,4 +48,7 @@ function onLoadMore() {
     const page = btnLoadMore.dataset.page;
     const search = inputRef.value;
     showPictures(search, page);
+    getDataPictures(search, page)
+    .then(data => showNumberOfPictures(page, data.totalHits));
+    
 }
