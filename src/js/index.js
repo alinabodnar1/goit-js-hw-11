@@ -1,4 +1,6 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import "simplelightbox/dist/simple-lightbox.min.css";
+
 import SimpleLightbox from "simplelightbox";
 import { getDataPictures } from './api';
 import {
@@ -44,13 +46,14 @@ function onSearch(event) {
         statusPage = 1;
         clearPictures();
         showPictures(search, 1);
+        
     }
 }
+
 function onLoadMore() {
     const page = btnLoadMore.dataset.page;
     const search = inputRef.value;
     showPictures(search, page);
     getDataPictures(search, page)
-    .then(data => showNumberOfPictures(page, data.totalHits));
-    
+        .then(data => showNumberOfPictures(page, data.totalHits));   
 }

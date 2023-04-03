@@ -1,6 +1,6 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
 import { btnLoadMore } from './index';
+
 const gallery = document.querySelector('.gallery');
 
 class Pictures {
@@ -24,25 +24,24 @@ const createCollection = (data, count) => {
 const renderPictures = (collection) => {
     const pictures = collection.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         return `<a class="gallery__item" href="${largeImageURL}">
-                <div class="photo-card">
-                    <img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy"/>
-                    <div class="info">
-                        <p class="info-item">
-                            <b>Likes</b>${likes}</p>
-                        <p class="info-item">
-                            <b>Views</b>${views}</p>
-                        <p class="info-item">
-                            <b>Comments</b>${comments}</p>
-                        <p class="info-item">
-                            <b>Downloads</b>${downloads}</p>
+                    <div class="photo-card">
+                        <img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy"/>
+                        <div class="info">
+                            <p class="info-item">
+                                <b>Likes</b>${likes}</p>
+                            <p class="info-item">
+                                <b>Views</b>${views}</p>
+                            <p class="info-item">
+                                <b>Comments</b>${comments}</p>
+                            <p class="info-item">
+                                <b>Downloads</b>${downloads}</p>
+                        </div>  
                     </div>
-                </div>
                 </a>
                 `;
     }).join("");
 
     gallery.insertAdjacentHTML('beforeend', pictures);
-
 }
 
 const updateLoadButton = (currentPage) => {
@@ -56,7 +55,7 @@ const clearPictures = () => {
 
 const showNumberOfPictures = (page, totalHits) => {
     let total = page * 40;
-    if (total >= totalHits) {
+    if (total > totalHits) {
         return;
     }
         Notify.success(`Hooray! We found ${total} images.`);
