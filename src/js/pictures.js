@@ -1,5 +1,4 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import SimpleLightbox from "simplelightbox";
 
 import { btnLoadMore } from './index';
 const gallery = document.querySelector('.gallery');
@@ -24,9 +23,9 @@ const createCollection = (data, count) => {
 
 const renderPictures = (collection) => {
     const pictures = collection.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
-        return `<div class="photo-card">
-                <a class="gallery__item" href="${webformatURL}">
-                    <img class="gallery__image" src="${largeImageURL}" alt="${tags}" loading="lazy" />
+        return `<a class="gallery__item" href="${largeImageURL}">
+                <div class="photo-card">
+                    <img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy"/>
                     <div class="info">
                         <p class="info-item">
                             <b>Likes</b>${likes}</p>
@@ -37,14 +36,13 @@ const renderPictures = (collection) => {
                         <p class="info-item">
                             <b>Downloads</b>${downloads}</p>
                     </div>
-                    </a>
                 </div>
+                </a>
                 `;
     }).join("");
 
     gallery.insertAdjacentHTML('beforeend', pictures);
 
-    const lightbox = new SimpleLightbox('.gallery a');
 }
 
 const updateLoadButton = (currentPage) => {

@@ -1,5 +1,5 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
+import SimpleLightbox from "simplelightbox";
 import { getDataPictures } from './api';
 import {
     clearPictures,
@@ -7,8 +7,9 @@ import {
     createCollection,
     updateLoadButton,
     showNumberOfPictures,
-    gallerySimplelightbox
-    } from './pictures';
+} from './pictures';
+    
+const lightbox = new SimpleLightbox('.gallery a');
 
 export const btnLoadMore = document.querySelector('.load-more');
 const formRef = document.querySelector("#search-form");
@@ -26,6 +27,7 @@ const showPictures = (search, page) => getDataPictures(search, page)
             return;
         }
         renderPictures(createCollection(data.hits));
+        lightbox.refresh();
         updateLoadButton(page);
 
     }).catch(() => {
