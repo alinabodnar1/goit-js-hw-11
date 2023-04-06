@@ -46,7 +46,13 @@ const renderPictures = (collection) => {
 
 const updateLoadButton = (currentPage) => {
     btnLoadMore.style.display = 'block';
-    btnLoadMore.dataset.page = Number(currentPage) + 1;    
+    btnLoadMore.dataset.page = Number(currentPage) + 1; 
+    const { height: cardHeight } = gallery.firstElementChild.getBoundingClientRect();
+
+        window.scrollBy({
+            top: cardHeight * 2,
+            behavior: "smooth",
+        });
 }; 
 
 const clearPictures = () => {
