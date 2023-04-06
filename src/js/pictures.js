@@ -45,8 +45,9 @@ const renderPictures = (collection) => {
 }
 
 const updateLoadButton = (currentPage) => {
-    btnLoadMore.style.display = 'block';
+    // btnLoadMore.style.display = 'block';
     btnLoadMore.dataset.page = Number(currentPage) + 1; 
+
     const { height: cardHeight } = gallery.firstElementChild.getBoundingClientRect();
 
         window.scrollBy({
@@ -74,4 +75,6 @@ export {
     updateLoadButton,
     clearPictures,
     showNumberOfPictures,
+    gallery,
+    infinityScroll
 };

@@ -9,6 +9,8 @@ import {
     createCollection,
     updateLoadButton,
     showNumberOfPictures,
+    gallery,
+    infinityScroll
 } from './pictures';
     
 const lightbox = new SimpleLightbox('.gallery a');
@@ -20,7 +22,8 @@ let statusRow = '';
 let statusPage = 1;
 
 formRef.addEventListener('submit', onSearch);
-btnLoadMore.addEventListener('click', onLoadMore);
+// btnLoadMore.addEventListener('click', onLoadMore);
+window.addEventListener('scroll', scrollMore);
 
 const showPictures = (search, page) => getDataPictures(search, page)
     .then(data => {
@@ -31,8 +34,8 @@ const showPictures = (search, page) => getDataPictures(search, page)
         renderPictures(createCollection(data.hits));
         lightbox.refresh();
         updateLoadButton(page);
-
-    }).catch(() => {
+    })
+    .catch(() => {
         btnLoadMore.style.display = 'none';
         Notify.failure("We're sorry, but you've reached the end of search results.");
     });
@@ -50,10 +53,24 @@ function onSearch(event) {
     }
 }
 
-function onLoadMore() {
+function scrollMore() {
+  
+ const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+ if (scrollTop + clientHeight >= scrollHeight) {
+//    load next page of photos
     const page = btnLoadMore.dataset.page;
     const search = inputRef.value;
     showPictures(search, page);
     getDataPictures(search, page)
-        .then(data => showNumberOfPictures(page, data.totalHits));   
+        .then(data => showNumberOfPictures(page, data.totalHits));
+ }
+   
 }
+// function onLoadMore() {
+//     const page = btnLoadMore.dataset.page;
+//     const search = inputRef.value;
+//     showPictures(search, page);
+//     getDataPictures(search, page)
+//         .then(data => showNumberOfPictures(page, data.totalHits));   
+// }
+
