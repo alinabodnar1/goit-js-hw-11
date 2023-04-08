@@ -1,5 +1,4 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { btnLoadMore } from './index';
 
 const gallery = document.querySelector('.gallery');
 
@@ -44,10 +43,9 @@ const renderPictures = (collection) => {
     gallery.insertAdjacentHTML('beforeend', pictures);
 }
 
-const updateLoadButton = (currentPage) => {
-    // btnLoadMore.style.display = 'block';
-    btnLoadMore.dataset.page = Number(currentPage) + 1; 
 
+
+const smoothScroll = () => {
     const { height: cardHeight } = gallery.firstElementChild.getBoundingClientRect();
 
         window.scrollBy({
@@ -68,13 +66,10 @@ const showNumberOfPictures = (page, totalHits) => {
         Notify.success(`Hooray! We found ${total} images.`);
 };
 
-
 export {
     renderPictures,
     createCollection,
-    updateLoadButton,
+    smoothScroll,
     clearPictures,
-    showNumberOfPictures,
-    gallery,
-    infinityScroll
+    showNumberOfPictures
 };
