@@ -7,7 +7,7 @@ import {
     clearPictures,
     renderPictures,
     createCollection,
-    smoothScroll,
+    scrollSmooth,
     showNumberOfPictures
 } from './pictures';
     
@@ -18,10 +18,10 @@ const formRef = document.querySelector("#search-form");
 const inputRef = document.querySelector("input");
 let statusRow = '';
 let statusPage = 1;
-let loadedImages = 0;
 
 formRef.addEventListener('submit', onSearch);
-window.addEventListener('scroll', infinityScroll);
+// btnLoadMore.addEventListener('click', onLoadMore);
+window.addEventListener('scroll', onScrollMore);
 
 const showPictures = (search, page) => getDataPictures(search, page)
     .then(data => {
@@ -31,10 +31,11 @@ const showPictures = (search, page) => getDataPictures(search, page)
         }
         renderPictures(createCollection(data.hits));
         lightbox.refresh();
-        smoothScroll();
+        scrollSmooth(page);
         showNumberOfPictures(page, data.totalHits);
     })
     .catch(() => {
+        // btnLoadMore.style.display = 'none';
         Notify.failure("We're sorry, but you've reached the end of search results.");
     });
 
@@ -47,30 +48,24 @@ function onSearch(event) {
         statusPage = 1;
         clearPictures();
         showPictures(search, 1);
+        
     }
 }
-// Нескінченний скрол при прокрутці 80% сторінки 
 
-function infinityScroll() {
-    const scrollPosition = window.scrollY;
-    const pageHeight = document.documentElement.scrollHeight;
-    const scrollPercentage = (scrollPosition / (pageHeight - window.innerHeight)) * 100;
-    
-    if (scrollPercentage > 80 && loadedImages < 40) {
-             loadImages(page); 
-    }   
-  }
-
-function loadImages(page) {
-    const search = inputRef.value;
-
-    showPictures(search, page);
-
-    loadedImages += 40;
-    updatePage(page);
+function onScrollMore() {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+ 
+    if (scrollTop + clientHeight >= scrollHeight) {
+        const page = btnLoadMore.dataset.page;
+        const search = inputRef.value;
+        showPictures(search, page);
+    }
 }
 
-function updatePage(page) {
-    let nextPage = page + 1;
-    return nextPage;
-}
+// function onLoadMore() {
+//     const page = btnLoadMore.dataset.page;
+//     const search = inputRef.value;
+//     showPictures(search, page);
+//     getDataPictures(search, page)
+//         .then(data => showNumberOfPictures(page, data.totalHits));   
+// }
